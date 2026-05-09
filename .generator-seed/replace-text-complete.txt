@@ -1,0 +1,4 @@
+repo=lambda-demo-app
+branch=main
+source_commit=25a73aa9c4bbf58dd92c5813139e4ffac0d8a1ac
+completed_at=2026-05-09T13:27:18Z
