@@ -1,0 +1,17 @@
+apiVersion: management.loft.sh/v1
+kind: NodeEnvironment
+metadata:
+  name: private-nodes-aws-environment
+spec:
+  displayName: Private Nodes AWS Environment
+  providerRef: private-nodes-aws-node-provider
+  controlPlane: true
+  owner:
+    team: loft-admins
+  properties:
+    region: us-east-1
+  access:
+    - verbs:
+        - get
+      users:
+        - '*'
