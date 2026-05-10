@@ -40,6 +40,7 @@ continuous-promotion|continuousPromotion
 database-connector|databaseConnector
 namespace-sync|namespaceSync
 private-nodes|privateNodes
+private-nodes-aws|privateNodesAWS
 rancher|rancher
 resolve-dns|resolveDNS
 tenant-observability|tenantObservability
@@ -93,6 +94,9 @@ canonical_use_case_name() {
     private-nodes|privatenodes|privateNodes)
       printf '%s\n' "private-nodes"
       ;;
+    private-nodes-aws|privatenodesaws|privateNodesAWS)
+      printf '%s\n' "private-nodes-aws"
+      ;;
     rancher)
       printf '%s\n' "rancher"
       ;;
@@ -129,6 +133,7 @@ label_key_for_use_case() {
     database-connector) printf '%s\n' "databaseConnector" ;;
     namespace-sync) printf '%s\n' "namespaceSync" ;;
     private-nodes) printf '%s\n' "privateNodes" ;;
+    private-nodes-aws) printf '%s\n' "privateNodesAWS" ;;
     rancher) printf '%s\n' "rancher" ;;
     resolve-dns) printf '%s\n' "resolveDNS" ;;
     tenant-observability) printf '%s\n' "tenantObservability" ;;
@@ -348,6 +353,7 @@ Supported use cases for the vind cluster-local secret:
 - kyverno
 - database-connector
 - namespace-sync
+- private-nodes-aws
 - rancher
 - resolve-dns
 - tenant-observability
