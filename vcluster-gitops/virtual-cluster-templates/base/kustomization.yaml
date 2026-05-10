@@ -6,3 +6,4 @@ resources:
   - sleepy.yaml
   - argocd.yaml
   - preview.yaml
+  - private-nodes-aws.yaml

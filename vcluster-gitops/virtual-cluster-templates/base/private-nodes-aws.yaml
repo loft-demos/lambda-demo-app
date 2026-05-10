@@ -1,0 +1,94 @@
+---
+apiVersion: management.loft.sh/v1
+kind: VirtualClusterTemplate
+metadata:
+  name: private-nodes-aws-template
+  labels:
+    patchType: non-versioned
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
+spec:
+  displayName: Private Nodes AWS Template
+  description: Tenant cluster with private nodes, node-to-node VPN encryption, cert-manager integration, and network isolation for AWS
+  template:
+    metadata: {}
+    instanceTemplate:
+      metadata: {}
+    pro:
+      enabled: true
+    helmRelease:
+      chart:
+        version: 0.32.0
+      values: |
+        privateNodes:
+          enabled: true
+          vpn:
+            enabled: true
+            nodeToNode:
+              enabled: true
+          autoUpgrade:
+            enabled: true
+            concurrency: 2
+          daemon:
+            controlPlaneLoadBalancer:
+              enabled: true
+
+        integrations:
+          certManager:
+            enabled: true
+            sync:
+              fromHost:
+                clusterIssuers:
+                  enabled: true
+              toHost:
+                certificates:
+                  enabled: true
+                issuers:
+                  enabled: true
+
+        policies:
+          networkPolicy:
+            enabled: true
+            workload:
+              publicEgress:
+                enabled: true
+                except:
+                  - "10.0.0.0/8"
+                  - "172.16.0.0/12"
+                  - "192.168.0.0/16"
+                  - "100.64.0.0/10"
+          resourceQuota:
+            enabled: "auto"
+
+        controlPlane:
+          backingStore:
+            etcd:
+              embedded:
+                enabled: true
+          coredns:
+            embedded: true
+          distro:
+            k8s:
+              image:
+                tag: "{{ .Values.k8sVersion }}"
+
+    accessPoint:
+      ingress: {}
+    spaceTemplate:
+      metadata: {}
+  parameters:
+    - variable: k8sVersion
+      label: k8sVersion
+      type: string
+      description: Please select Kubernetes version
+      options:
+        - v1.33.2
+        - v1.32.6
+        - v1.31.10
+        - v1.30.13
+      defaultValue: v1.32.6
+  access:
+    - verbs:
+        - get
+      users:
+        - '*'
