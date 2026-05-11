@@ -54,8 +54,6 @@ spec:
             etcd:
               embedded:
                 enabled: true
-          coredns:
-            embedded: true
           distro:
             k8s:
               image:
