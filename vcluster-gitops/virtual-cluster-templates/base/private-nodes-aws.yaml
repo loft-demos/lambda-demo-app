@@ -22,6 +22,11 @@ spec:
       values: |
         privateNodes:
           enabled: true
+          autoNodes:
+            - provider: private-nodes-aws-node-provider
+              static:
+                - name: node-pool-1
+                  quantity: {{ .Values.nodeCount }}
           vpn:
             enabled: true
             nodeToNode:
@@ -87,6 +92,16 @@ spec:
         - v1.31.10
         - v1.30.13
       defaultValue: v1.32.6
+    - variable: nodeCount
+      label: Node Count
+      type: string
+      description: Number of static nodes to provision
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "5"
+      defaultValue: "2"
   access:
     - verbs:
         - get
