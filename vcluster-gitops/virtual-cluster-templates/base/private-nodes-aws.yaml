@@ -35,20 +35,6 @@ spec:
           daemon:
             controlPlaneLoadBalancer:
               enabled: true
-
-        integrations:
-          certManager:
-            enabled: true
-            sync:
-              fromHost:
-                clusterIssuers:
-                  enabled: true
-              toHost:
-                certificates:
-                  enabled: true
-                issuers:
-                  enabled: true
-
         policies:
           networkPolicy:
             enabled: true
