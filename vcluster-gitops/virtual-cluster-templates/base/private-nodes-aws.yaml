@@ -94,6 +94,84 @@ spec:
             - v1.35.4
             - v1.34.7
             - v1.33.11
+          defaultValue: v1.36.0
+          section: Kubernetes Environment
+        - variable: nodeCount
+          label: Node Count
+          type: string
+          description: Number of static nodes to provision
+          options:
+            - "1"
+            - "2"
+            - "3"
+            - "5"
+          defaultValue: "2"
+          required: true
+          section: Auto Nodes
+    - version: 1.0.0
+      template:
+        metadata: {}
+        instanceTemplate:
+          metadata: {}
+        pro:
+          enabled: true
+        helmRelease:
+          chart:
+            version: 0.34.0
+          values: |
+            privateNodes:
+              enabled: true
+              autoNodes:
+                - provider: private-nodes-aws-node-provider
+                  static:
+                    - name: node-pool-1
+                      quantity: {{ .Values.nodeCount }}
+              vpn:
+                enabled: true
+                nodeToNode:
+                  enabled: true
+              autoUpgrade:
+                enabled: true
+                concurrency: 2
+              daemon:
+                controlPlaneLoadBalancer:
+                  enabled: true
+            policies:
+              networkPolicy:
+                enabled: true
+                workload:
+                  publicEgress:
+                    enabled: true
+                    except:
+                      - "10.0.0.0/8"
+                      - "172.16.0.0/12"
+                      - "192.168.0.0/16"
+                      - "100.64.0.0/10"
+              resourceQuota:
+                enabled: "auto"
+            controlPlane:
+              backingStore:
+                etcd:
+                  embedded:
+                    enabled: true
+              distro:
+                k8s:
+                  image:
+                    tag: "{{ .Values.k8sVersion }}"
+        accessPoint:
+          ingress: {}
+        spaceTemplate:
+          metadata: {}
+      parameters:
+        - variable: k8sVersion
+          label: k8sVersion
+          type: string
+          description: Please select Kubernetes version
+          options:
+            - v1.36.0
+            - v1.35.4
+            - v1.34.7
+            - v1.33.11
           defaultValue: v1.35.4
           section: Kubernetes Environment
         - variable: nodeCount
