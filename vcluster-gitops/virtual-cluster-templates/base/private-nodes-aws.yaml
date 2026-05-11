@@ -102,6 +102,7 @@ spec:
         - "3"
         - "5"
       defaultValue: "2"
+      required: true
   access:
     - verbs:
         - get
